@@ -50,6 +50,6 @@ def getchain(name='SPY'):
     mostrecent -= relativedelta(hours=5)
     fetchtime = mostrecent.strftime('%B %d at %I:%M Central')
 
-    values = random.sample(values, 100)
+    # values = random.sample(values, 1000)
     values.sort(key=lambda item: (item.dte, item.option.type, item.option.strike))
     return values, fetchtime
