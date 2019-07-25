@@ -15,7 +15,7 @@
 <div class="panel panel-default">
     <!-- Default panel contents -->
     <div class="panel-heading">
-        Last Update: {{ fetchtime }}
+        <span class='bold'>Last Update:</span> {{ fetchtime }}
     </div>
     <div class="panel-body">
         <p class='col-sm-4'>
@@ -28,33 +28,35 @@
     <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Strike</th>
                 <th>Type</th>
                 <th>DTE</th>
+                <th>Strike</th>
+                <th>Price ({{ tradable.name }})</th>
+                <th>ITM</th>
                 <th>Bid</th>
                 <th>Ask</th>
                 <th>Last</th>
-                <th>ITM</th>
                 <th>Theta</th>
                 <th>Volume</th>
                 <th>Volatility</th>
-                <th>{{ tradable.name }}</th>
+                <th>Symbol</th>
             </tr>
         </thead>
         <tbody>
             {% for item in data %}
             <tr>
-                <td>{{ item.option.strike }}</td>
-                <td>{{ item.option.type }}</td>
+                <td class='type-{{ item.option.type | lower }}'>{{ item.option.type }}</td>
                 <td>{{ item.dte }}</td>
+                <td>{{ item.option.strike }}</td>
+                <td>{{ item.underlying | round(2) }}</td>
+                <td class="{% if item.itm %}text-danger{% endif %}">{% if item.itm %}Yes{% else %}No{% endif %}</td>
                 <td>{{ item.bid }}</td>
                 <td>{{ item.ask }}</td>
                 <td>{{ item.last }}</td>
-                <td>{{ item.itm }}</td>
                 <td>{{ item.theta }}</td>
                 <td>{{ item.volume }}</td>
-                <td>{{ item.volatility }}</td>
-                <td>{{ item.underlying | round(2) }}</td>
+                <td>{{ item.volatility | round(1) }}%</td>
+                <td>{{ item.option.symbol }}</td>
             </tr>
             {% endfor %}
         </tbody>
