@@ -2,12 +2,10 @@ import random
 import datetime
 from dateutil.relativedelta import relativedelta
 from flask import Flask, render_template
-from flask_moment import Moment
 from .td.db.models import Tradable, Option, OptionData, session
 
 
 app = Flask(__name__, template_folder="static/templates")
-moment = Moment(app)
 
 @app.route('/')
 def index():
