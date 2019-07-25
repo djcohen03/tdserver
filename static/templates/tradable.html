@@ -1,0 +1,61 @@
+{% extends '_base.html' %}
+{% block body %}
+<ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li class="active">{{ tradable.name }}</li>
+</ol>
+
+
+
+<div class="page-header">
+    <h1>{{ tradable.name }} Data</h1>
+</div>
+
+
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        Last Update: {{ moment(fetchtime).calendar() }}
+    </div>
+    <!-- <div class="panel-body">
+        <p></p>
+    </div> -->
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Strike</th>
+                <th>Type</th>
+                <th>DTE</th>
+                <th>Bid</th>
+                <th>Ask</th>
+                <th>Last</th>
+                <th>ITM</th>
+                <th>Theta</th>
+                <th>Volume</th>
+                <th>Volatility</th>
+                <th>{{ tradable.name }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td>{{ item.option.strike }}</td>
+                <td>{{ item.option.type }}</td>
+                <td>{{ item.dte }}</td>
+                <td>{{ item.bid }}</td>
+                <td>{{ item.ask }}</td>
+                <td>{{ item.last }}</td>
+                <td>{{ item.itm }}</td>
+                <td>{{ item.theta }}</td>
+                <td>{{ item.volume }}</td>
+                <td>{{ item.volatility }}</td>
+                <td>{{ item.underlying | round(2) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
