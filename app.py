@@ -1,3 +1,4 @@
+import random
 import datetime
 from dateutil.relativedelta import relativedelta
 from flask import Flask, render_template
@@ -48,5 +49,9 @@ def getchain(name='SPY'):
     print('Collecting Options Data Records From Most Recent API Fetch...')
     values = session.query(OptionData).filter(OptionData.id.in_(dataids)).all()
 
-    # values.sort(key=lambda item: (item.dte, item.option.type, item.option.strike))
-    return values[:10], mostrecent
+    mostrecent -= relativedelta(hours=5)
+    fetchtime = mostrecent.strftime('%B %d at %I:%M Central')
+
+    values = random.sample(values, 50)
+    values.sort(key=lambda item: (item.dte, item.option.type, item.option.strike))
+    return values, fetchtime

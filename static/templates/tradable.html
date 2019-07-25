@@ -15,13 +15,17 @@
 <div class="panel panel-default">
     <!-- Default panel contents -->
     <div class="panel-heading">
-        Last Update: {{ moment(fetchtime).calendar() }}
+        Last Update: {{ fetchtime }}
     </div>
-    <!-- <div class="panel-body">
-        <p></p>
-    </div> -->
+    <div class="panel-body">
+        <p class='col-sm-4'>
+            This is a random sample of {{ data | length }} data points taken on
+            {{ fetchtime }}, sampled from the entire ladder of {{ tradable.name }}
+            options.  The data set has been cut down to reduce loading time.
+        </p>
+    </div>
 
-    <table class="table">
+    <table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th>Strike</th>
@@ -56,6 +60,7 @@
         </tbody>
     </table>
 </div>
+<p class="text-center ft-20">...</p>
 
 
 {% endblock %}
