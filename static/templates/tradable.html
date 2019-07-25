@@ -49,7 +49,7 @@
                 <td>{{ item.dte }}</td>
                 <td>{{ item.option.strike }}</td>
                 <td>{{ item.underlying | round(2) }}</td>
-                <td class="{% if item.itm %}text-danger{% endif %}">{% if item.itm %}Yes{% else %}No{% endif %}</td>
+                <td class="{% if item.itm %}text-success{% else %}text-danger{% endif %}">{% if item.itm %}ITM{% else %}OTM{% endif %}</td>
                 <td>{{ item.bid }}</td>
                 <td>{{ item.ask }}</td>
                 <td>{{ item.last }}</td>
