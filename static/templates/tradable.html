@@ -18,7 +18,7 @@
         <span class='bold'>Last Update:</span> {{ fetchtime }}
     </div>
     <div class="panel-body">
-        <p class='col-sm-4'>
+        <p class='col-sm-4' style="display:none;">
             This is a random sample of {{ data | length }} data points taken on
             {{ fetchtime }}, sampled from the entire ladder of {{ tradable.name }}
             options.  The data set has been cut down to reduce loading time.
@@ -30,6 +30,7 @@
             <tr>
                 <th>Type</th>
                 <th>DTE</th>
+                <th>Expiration</th>
                 <th>Strike</th>
                 <th>Price ({{ tradable.name }})</th>
                 <th>ITM</th>
@@ -47,9 +48,10 @@
             <tr>
                 <td class='type-{{ item.option.type | lower }}'>{{ item.option.type }}</td>
                 <td>{{ item.dte }}</td>
+                <td>{{ item.option.expiration }}</td>
                 <td>{{ item.option.strike }}</td>
                 <td>{{ item.underlying | round(2) }}</td>
-                <td class="{% if item.itm %}text-danger{% endif %}">{% if item.itm %}Yes{% else %}No{% endif %}</td>
+                <td class="{% if item.itm %}text-success{% else %}text-danger{% endif %}">{% if item.itm %}ITM{% else %}OTM{% endif %}</td>
                 <td>{{ item.bid }}</td>
                 <td>{{ item.ask }}</td>
                 <td>{{ item.last }}</td>
