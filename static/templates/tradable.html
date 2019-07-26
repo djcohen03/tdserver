@@ -37,6 +37,7 @@
                 <th>Bid</th>
                 <th>Ask</th>
                 <th>Last</th>
+                <th>Delta</th>
                 <th>Theta</th>
                 <th>Volume</th>
                 <th>Volatility</th>
@@ -55,10 +56,11 @@
                 <td>{{ item.bid }}</td>
                 <td>{{ item.ask }}</td>
                 <td>{{ item.last }}</td>
+                <td class="{% if item.delta >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.delta }}</td>
                 <td>{{ item.theta }}</td>
                 <td>{{ item.volume }}</td>
                 <td>{{ item.volatility | round(1) }}%</td>
-                <td>{{ item.option.symbol }}</td>
+                <td><a href="/tradable/option/{{ item.id }}">{{ item.option.symbol }}</a></td>
             </tr>
             {% endfor %}
         </tbody>

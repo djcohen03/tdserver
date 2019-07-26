@@ -1,0 +1,78 @@
+{% extends '_base.html' %}
+
+{% block body %}
+
+<ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li><a href="/tradable/{{ value.option.tradable.id }}">{{ value.option.tradable.name }}</a></li>
+    <li class="active">{{ value.option.symbol }}</li>
+</ol>
+
+
+
+<div class="page-header">
+    <h1>{{ value.option.symbol }} Data</h1>
+</div>
+
+<p>Last Fetched {{ value.time }}</p>
+
+<div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
+        <div class="jumbotron">
+            <div class="container">
+                <div class="row data-display">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-6 data-labels">
+                                <h2>Underlying:</h2>
+                                <h2>Type:</h2>
+                                <h2>Expiration:</h2>
+                                <h2>DTE:</h2>
+                                <h2>Strike:</h2>
+                                <h2>Price:</h2>
+                            </div>
+                            <div class="col-sm-6 data-values">
+                                <h2>{{ value.option.tradable.name }}</h2>
+                                <h2>{{ value.option.type }}</h2>
+                                <h2>{{ value.option.expiration }}</h2>
+                                <h2>{{ value.dte }} days</h2>
+                                <h2>{{ value.option.strike }}</h2>
+                                <h2>{{ value.underlying }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-6 data-labels">
+                                <h2>Bid:</h2>
+                                <h2>Ask:</h2>
+                                <h2>IV:</h2>
+                                <h2>Delta:</h2>
+                                <h2>Theta:</h2>
+                                <h2>Gamma:</h2>
+                                <h2>Vega:</h2>
+                                <h2>Rho:</h2>
+                                <h2>Theo. Value:</h2>
+                                <h2>Theo. Vol:</h2>
+                            </div>
+                            <div class="col-sm-6 data-values">
+                                <h2>{{ value.bid }} ({{ value.asksize }})</h2>
+                                <h2>{{ value.ask }} ({{ value.bidsize }})</h2>
+                                <h2>{{ value.volatility | round(1) }}%</h2>
+                                <h2 class="{% if value.delta >= 0 %}text-success{% else %}text-danger{% endif %}">{{ value.delta }}</h2>
+                                <h2>{{ value.theta }}</h2>
+                                <h2>{{ value.gamma }}</h2>
+                                <h2>{{ value.vega }}</h2>
+                                <h2>{{ value.rho }}</h2>
+                                <h2>{{ value.theovalue }}</h2>
+                                <h2>{{ value.theovol }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

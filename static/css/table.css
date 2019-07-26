@@ -1,0 +1,12 @@
+td.type-call {
+    font-weight: bold;
+    color: rgb(0, 94, 158);
+}
+td.type-put {
+    font-weight: bold;
+    color: rgb(210, 76, 0);
+}
+
+table.table td, table.table th {
+    text-align: center;
+}
