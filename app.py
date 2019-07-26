@@ -23,47 +23,10 @@ def tradable(id):
     data, fetchtime = getchain(tradable.name)
     return render_template('tradable.html', tradable=tradable, data=data, fetchtime=fetchtime)
 
-@app.route('/chain/<int:id>')
-def chain(id):
-    tradable = session.query(Tradable).get(id)
-    allvalues, fetchtime = getchain(tradable.name)
-
-    # Bin values by type and expiration:
-    expirations = set(value.option.expiration for value in allvalues)
-    chainmap = {
-        expiration: {
-            'PUT': [], 'CALL': []
-        }
-        for expiration in expirations
-    }
-    for value in allvalues:
-        chainmap[value.option.expiration][value.option.type].append(value)
-
-    chain = []
-    for expiration in sorted(list(chainmap.keys())):
-        putcallmap = chainmap[expiration]
-        puts = putcallmap['PUT']
-        calls = putcallmap['CALL']
-
-        putstrikes  = {item.option.strike: item for item in puts}
-        callstrikes = {item.option.strike: item for item in calls}
-        strikes = sorted(list(set(list(putstrikes.keys()) + list(callstrikes.keys()))))
-
-        strikemap = {
-            strike: {
-                'put': putstrikes.get(strike),
-                'call': callstrikes.get(strike)
-            }
-            for strike in strikes
-        }
-        chainlist = [
-            (strike, strikemap[strike]['put'], strikemap[strike]['call'])
-            for strike in sorted(strikes)
-        ]
-
-        chain.append((expiration, chainlist))
-
-    return render_template('chain.html', tradable=tradable, chain=chain, fetchtime=fetchtime)
+@app.route('/tradable/option/<int:id>')
+def option(id):
+    value = session.query(OptionData).get(id)
+    return render_template('option.html', value=value)
 
 
 def getchain(name='SPY'):

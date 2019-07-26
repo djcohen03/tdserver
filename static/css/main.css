@@ -9,15 +9,9 @@ body {
     font-weight: bold;
 }
 
-/* td.type-call {
-    font-weight: bold;
-    color: rgb(0, 94, 158);
+.data-display .data-values > h2 {
+    font-weight: lighter;
 }
-td.type-put {
-    font-weight: bold;
-    color: rgb(210, 76, 0);
-} */
-
-table.table td, table.table th {
-    text-align: center;
+.data-display .data-labels {
+    text-align: right;
 }
