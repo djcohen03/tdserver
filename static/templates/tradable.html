@@ -53,8 +53,8 @@
                 <td>{{ item.option.strike }}</td>
                 <td>{{ item.underlying | round(2) }}</td>
                 <td class="{% if item.itm %}text-success{% else %}text-danger{% endif %}">{% if item.itm %}ITM{% else %}OTM{% endif %}</td>
-                <td>{{ item.bid }} <span class='subspan'>({{ item.bidsize }})</span> </td>
-                <td>{{ item.ask }} <span class='subspan'>({{ item.asksize }})</span> </td>
+                <td>{{ item.bid }} <span class='subspan'>{{ item.bidsize }}</span> </td>
+                <td>{{ item.ask }} <span class='subspan'>{{ item.asksize }}</span> </td>
                 <td>{{ item.volatility | round(1) }}%</td>
                 <td class="{% if item.delta >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.delta }}</td>
                 <td>{{ item.theta }}</td>
