@@ -11,7 +11,12 @@ table.table td, table.table th {
     text-align: center;
 }
 
+/* Subspan: */
 td > span.subspan {
     font-size: 9px;
     color: #777;
 }
+
+/* Border Right, Border Left: */
+th.br, td.br { border-right: 1px solid #ddd; }
+th.bl, td.bl { border-left: 1px solid #ddd; }

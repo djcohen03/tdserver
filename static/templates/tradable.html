@@ -28,19 +28,25 @@
     <table class="table table-striped table-hover">
         <thead>
             <tr>
+                <th colspan="4" class='br'>Contract</th>
+                <th colspan="5" class='br'>Market</th>
+                <th colspan="4" class='br'>Greeks</th>
+                <th></th>
+            </tr>
+            <tr>
                 <th>Type</th>
                 <th>DTE</th>
                 <th>Expiration</th>
-                <th>Strike</th>
+                <th class='br'>Strike</th>
                 <th>Price ({{ tradable.name }})</th>
                 <th>ITM</th>
                 <th>Bid</th>
                 <th>Ask</th>
-                <th>Impl. Vol</th>
+                <th class='br'>Impl. Vol</th>
                 <th>Delta</th>
                 <th>Theta</th>
                 <th>Rho</th>
-                <th>Vega</th>
+                <th class='br'>Vega</th>
                 <th>Symbol</th>
             </tr>
         </thead>
@@ -50,16 +56,16 @@
                 <td class='type-{{ item.option.type | lower }}'>{{ item.option.type }}</td>
                 <td>{{ item.dte }}</td>
                 <td>{{ item.option.expiration }}</td>
-                <td>{{ item.option.strike }}</td>
+                <td class='br'>{{ item.option.strike }}</td>
                 <td>{{ item.underlying | round(2) }}</td>
                 <td class="{% if item.itm %}text-success{% else %}text-danger{% endif %}">{% if item.itm %}ITM{% else %}OTM{% endif %}</td>
                 <td>{{ item.bid }} <span class='subspan'>{{ item.bidsize }}</span> </td>
                 <td>{{ item.ask }} <span class='subspan'>{{ item.asksize }}</span> </td>
-                <td>{{ item.volatility | round(1) }}%</td>
+                <td class='br'>{{ item.volatility | round(1) }}%</td>
                 <td class="{% if item.delta >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.delta }}</td>
                 <td>{{ item.theta }}</td>
                 <td class="{% if item.rho >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.rho }}</td>
-                <td>{{ item.vega }}</td>
+                <td class='br'>{{ item.vega }}</td>
                 <td><a href="/tradable/option/{{ item.id }}">{{ item.option.symbol }}</a></td>
             </tr>
             {% endfor %}
