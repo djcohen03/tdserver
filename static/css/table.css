@@ -10,3 +10,8 @@ td.type-put {
 table.table td, table.table th {
     text-align: center;
 }
+
+td > span.subspan {
+    font-size: 9px;
+    color: #777;
+}

@@ -36,10 +36,11 @@
                 <th>ITM</th>
                 <th>Bid</th>
                 <th>Ask</th>
-                <th>Last</th>
+                <th>Impl. Vol</th>
                 <th>Delta</th>
                 <th>Theta</th>
-                <th>Volatility</th>
+                <th>Rho</th>
+                <th>Vega</th>
                 <th>Symbol</th>
             </tr>
         </thead>
@@ -52,12 +53,13 @@
                 <td>{{ item.option.strike }}</td>
                 <td>{{ item.underlying | round(2) }}</td>
                 <td class="{% if item.itm %}text-success{% else %}text-danger{% endif %}">{% if item.itm %}ITM{% else %}OTM{% endif %}</td>
-                <td>{{ item.bid }} ({{ item.bidsize }})</td>
-                <td>{{ item.ask }} ({{ item.asksize }})</td>
-                <td>{{ item.last }}</td>
+                <td>{{ item.bid }} <span class='subspan'>({{ item.bidsize }})</span> </td>
+                <td>{{ item.ask }} <span class='subspan'>({{ item.asksize }})</span> </td>
+                <td>{{ item.volatility | round(1) }}%</td>
                 <td class="{% if item.delta >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.delta }}</td>
                 <td>{{ item.theta }}</td>
-                <td>{{ item.volatility | round(1) }}%</td>
+                <td class="{% if item.rho >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.rho }}</td>
+                <td>{{ item.vega }}</td>
                 <td><a href="/tradable/option/{{ item.id }}">{{ item.option.symbol }}</a></td>
             </tr>
             {% endfor %}
