@@ -12,9 +12,10 @@ table.table td, table.table th {
 }
 
 /* Subspan: */
-td > span.subspan {
+td > span.subspan, th > span.subspan {
     font-size: 9px;
     color: #777;
+    font-weight: normal;
 }
 
 /* Border Right, Border Left: */
