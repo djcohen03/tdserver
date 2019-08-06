@@ -37,7 +37,6 @@
                 <th>Bid</th>
                 <th>Ask</th>
                 <th>Impl. Vol</th>
-                <th>Last</th>
                 <th>Delta</th>
                 <th>Theta</th>
                 <th>Rho</th>
@@ -57,7 +56,6 @@
                 <td>{{ item.bid }} <span class='subspan'>({{ item.bidsize }})</span> </td>
                 <td>{{ item.ask }} <span class='subspan'>({{ item.asksize }})</span> </td>
                 <td>{{ item.volatility | round(1) }}%</td>
-                <td>{{ item.last }}</td>
                 <td class="{% if item.delta >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.delta }}</td>
                 <td>{{ item.theta }}</td>
                 <td class="{% if item.rho >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.rho }}</td>
