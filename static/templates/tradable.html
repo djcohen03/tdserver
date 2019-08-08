@@ -42,8 +42,8 @@
                 <th>ITM</th>
                 <th>Bid</th>
                 <th>Ask</th>
-                <th>OI</th>
-                <th class='br'>Impl. Vol</th>
+                <th>Impl. Vol</th>
+                <th class='br'>OI</th>
                 <th>Delta</th>
                 <th>Theta</th>
                 <th>Rho</th>
@@ -62,8 +62,8 @@
                 <td class="{% if item.itm %}text-success{% else %}text-danger{% endif %}">{% if item.itm %}ITM{% else %}OTM{% endif %}</td>
                 <td>{{ item.bid }} <span class='subspan'>{{ item.bidsize }}</span> </td>
                 <td>{{ item.ask }} <span class='subspan'>{{ item.asksize }}</span> </td>
-                <td>{% if item.openinterest != None %}{{ item.openinterest }}{% endif %}</td>
-                <td class='br'>{{ item.volatility | round(1) }}%</td>
+                <td>{{ item.volatility | round(1) }}%</td>
+                <td class='br'>{% if item.openinterest != None %}{{ item.openinterest }}{% endif %}</td>
                 <td class="{% if item.delta >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.delta }}</td>
                 <td>{{ item.theta }}</td>
                 <td class="{% if item.rho >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.rho }}</td>
