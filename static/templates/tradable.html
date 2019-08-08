@@ -29,7 +29,7 @@
         <thead>
             <tr>
                 <th colspan="4" class='br'>Contract</th>
-                <th colspan="5" class='br'>Market</th>
+                <th colspan="6" class='br'>Market</th>
                 <th colspan="4" class='br'>Greeks</th>
                 <th></th>
             </tr>
@@ -42,6 +42,7 @@
                 <th>ITM</th>
                 <th>Bid</th>
                 <th>Ask</th>
+                <th>OI</th>
                 <th class='br'>Impl. Vol</th>
                 <th>Delta</th>
                 <th>Theta</th>
@@ -61,6 +62,7 @@
                 <td class="{% if item.itm %}text-success{% else %}text-danger{% endif %}">{% if item.itm %}ITM{% else %}OTM{% endif %}</td>
                 <td>{{ item.bid }} <span class='subspan'>{{ item.bidsize }}</span> </td>
                 <td>{{ item.ask }} <span class='subspan'>{{ item.asksize }}</span> </td>
+                <td>{% if item.openinterest != None %}{{ item.openinterest }}{% endif %}</td>
                 <td class='br'>{{ item.volatility | round(1) }}%</td>
                 <td class="{% if item.delta >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.delta }}</td>
                 <td>{{ item.theta }}</td>
