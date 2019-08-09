@@ -9,11 +9,16 @@ app = Flask(__name__, template_folder="static/templates")
 
 @app.route('/')
 def index():
+    ''' Home Page Endpoint
+    '''
+    # Get the amount of memory used for display:
+    gigabytes = memoryused()
+
     tradables = session.query(Tradable).filter_by(enabled=True).all()
     spy = session.query(Tradable).filter_by(name='SPY').all()
     tradables += spy
     tradables.sort(key=lambda x: x.name)
-    return render_template('index.html', tradables=tradables)
+    return render_template('index.html', tradables=tradables, gigabytes=gigabytes)
 
 @app.route('/tradable/<int:id>')
 def tradable(id):
@@ -26,6 +31,13 @@ def option(id):
     value = session.query(OptionData).get(id)
     return render_template('option.html', value=value)
 
+def memoryused():
+    ''' Get's the amount of memory used in GB
+    '''
+    query = session.execute("SELECT pg_database_size('options');")
+    memory = [byts for (byts,) in query][0]
+    gigabytes = memory / (1000. ** 3)
+    return round(gigabytes, 2)
 
 def getchain(name='SPY'):
     ''' Get the most recent options chain for the given tradable
