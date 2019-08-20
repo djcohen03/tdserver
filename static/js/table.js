@@ -1,5 +1,18 @@
 $(function() {
 
+    var getText = cell => {
+        // Get the text of just the element, without any text from children
+        // elements:
+        return $(cell)
+            .clone()//clone the element
+            .children() //select all the children
+            .remove()   //remove all the children
+            .end()  //again go back to selected element
+            .text()
+            .trim();
+    }
+
+    //
     var bindTableDownload = (table, link) => {
         // Binds a download-table action on the given link for the given table
 
@@ -10,7 +23,7 @@ $(function() {
             // Loop through table header cells:
             $(header).find('th').each((i, cell) => {
                 // Append cell contents:
-                csvcontent += $(cell).text().trim() + ',';
+                csvcontent += getText(cell) + ',';
 
                 // Add extra spacing for colspans:
                 var colspan = $(cell).attr('colspan');
@@ -26,7 +39,7 @@ $(function() {
         table.find('tbody > tr').each((i, row) => {
             $(row).find('td').each((i, cell) => {
                 // Append cell contents:
-                csvcontent += $(cell).text().trim() + ',';
+                csvcontent += getText(cell) + ',';
 
             });
             csvcontent += '\r\n';
