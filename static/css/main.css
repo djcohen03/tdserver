@@ -15,3 +15,8 @@ body {
 .data-display .data-labels {
     text-align: right;
 }
+
+
+a.download {
+    cursor: pointer;
+}

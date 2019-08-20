@@ -16,6 +16,10 @@
     <!-- Default panel contents -->
     <div class="panel-heading">
         <span class='bold'>Last Update:</span> {{ fetchtime }}
+        <a class="pull-right download">
+            <span class="glyphicon glyphicon-download-alt"></span>
+            Download
+        </a>
     </div>
     <div class="panel-body">
         <p class='col-sm-4' style="display:none;">
@@ -76,5 +80,6 @@
 </div>
 <p class="text-center ft-20">...</p>
 
+<script type="text/javascript" src="/static/js/table.js"></script>
 
 {% endblock %}
