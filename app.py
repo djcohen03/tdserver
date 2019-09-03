@@ -70,3 +70,7 @@ def getchain(name='SPY'):
     # values = random.sample(values, 1000)
     values.sort(key=lambda item: (item.dte, item.option.type, item.option.strike))
     return values, fetchtime
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
