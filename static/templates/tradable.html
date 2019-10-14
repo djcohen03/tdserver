@@ -9,7 +9,7 @@
     <li><a href="/">Home</a></li>
     {% if fetchid %}
     <li><a href='/tradable/{{ tradable.id }}'>{{ tradable.name }}</a></li>
-    <li class="active">{{ fetchtime }}</li>
+    <li class="active">{{ fetchtime }} (Snapshot)</li>
     {% else %}
     <li class="active">{{ tradable.name }}</li>
     {% endif %}
@@ -20,12 +20,12 @@
 <div class="page-header">
     <div class="row">
         <div class="col-sm-8">
-            <h1>{{ tradable.name }} Data</h1>
+            <h1>{{ tradable.name }} {% if fetchid %}Snapshot{% else %}Surface{% endif %}</h1>
         </div>
         <div class="col-sm-4 header-select">
             <select id='choose-fetch' class="form-control">
                 {% for fetch in fetches %}
-                <option value="/tradable/{{ tradable.id }}{% if loop.index != 1 %}/fetch/{{ fetch.id }}{% endif %}" {% if fetchid == fetch.id %}selected{% endif %}>
+                <option value="/tradable/{{ tradable.id }}{% if loop.index != 1 %}/snapshot/{{ fetch.id }}{% endif %}" {% if fetchid == fetch.id %}selected{% endif %}>
                     {{ fetch.cststring }} {% if loop.index == 1 %}(CURRENT){% endif %}
                 </option>
                 {% endfor %}

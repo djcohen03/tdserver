@@ -43,9 +43,9 @@
                     {% for fetch in fetches %}
                     <tr>
                         <td>{{ tradable.name }}</td>
-                        <td data-content='{{ fetch.time.strftime("%Y-%m-%d %H:%M") }}'>
-                            <a href="/tradable/{{ tradable.id }}/fetch/{{ fetch.id }}" target="_blank">
-                                {{ fetch.time.strftime('%B %d %Y at %H:%M') }}
+                        <td data-content='{{ fetch.csttime.strftime("%Y-%m-%d %H:%M") }}'>
+                            <a href="/tradable/{{ tradable.id }}/snapshot/{{ fetch.id }}" target="_blank">
+                                {{ fetch.csttime.strftime('%B %d %Y at %H:%M') }}
                             </a>
                         </td>
                         <td>{% if fetch.volatility %}{{ fetch.volatility | round(2) }}%{% endif %}</td>

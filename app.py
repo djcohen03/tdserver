@@ -39,7 +39,7 @@ def tradable(id):
     else:
         return None
 
-@app.route('/tradable/<int:id>/fetch/<int:fetchid>')
+@app.route('/tradable/<int:id>/snapshot/<int:fetchid>')
 def tradable_fetch(id, fetchid):
     '''
     '''
