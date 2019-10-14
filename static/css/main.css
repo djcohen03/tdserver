@@ -24,3 +24,7 @@ a.download {
 .header-select {
     padding-top: 30px;
 }
+a.show-total {
+    margin-right: 20px;
+    cursor: pointer;
+}

@@ -61,6 +61,15 @@ def tradable_fetch(id, fetchid):
         fetches=fetches,
     )
 
+@app.route('/tradable/<int:id>/history')
+def history(id):
+    '''
+    '''
+    tradable = session.query(Tradable).get(id)
+    fetches = sorted(tradable.fetches, key=lambda x: x.time, reverse=True)
+    return render_template('history.html', fetches=fetches,  tradable=tradable)
+
+
 @app.route('/tradable/option/<int:id>')
 def option(id):
     value = session.query(OptionData).get(id)
