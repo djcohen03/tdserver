@@ -1,9 +1,6 @@
-import random
-import datetime
-from dateutil.relativedelta import relativedelta
 from flask import Flask, render_template
-from .td.db.models import Tradable, Option, OptionData, session
-
+from td.db.models import Tradable, Option, OptionData, OptionsFetch, session
+from utils import AppUtils
 
 app = Flask(__name__, template_folder="static/templates")
 
@@ -12,7 +9,7 @@ def index():
     ''' Home Page Endpoint
     '''
     # Get the amount of memory used for display:
-    gigabytes = memoryused()
+    gigabytes = AppUtils.memoryused()
 
     tradables = session.query(Tradable).filter_by(enabled=True).all()
     spy = session.query(Tradable).filter_by(name='SPY').all()
@@ -23,53 +20,49 @@ def index():
 @app.route('/tradable/<int:id>')
 def tradable(id):
     tradable = session.query(Tradable).get(id)
-    data, fetchtime = getchain(tradable.name)
-    return render_template('tradable.html', tradable=tradable, data=data, fetchtime=fetchtime)
+    fetches = tradable.fetches
+    if fetches:
+        fetch = fetches[-1]
+        values = sorted(fetch.values, key=lambda item: (
+            item.dte,
+            item.option.type,
+            item.option.strike
+        ))
+        return render_template(
+            'tradable.html',
+            tradable=tradable,
+            data=values,
+            fetchtime=fetch.cststring,
+            fetches=reversed(fetches)
+        )
+    else:
+        return None
+
+@app.route('/tradable/<int:id>/fetch/<int:fetchid>')
+def tradable_fetch(id, fetchid):
+    '''
+    '''
+    fetch = session.query(OptionsFetch).get(fetchid)
+    tradable = fetch.tradable
+    assert tradable.id == id
+    values = sorted(fetch.values, key=lambda item: (
+        item.dte,
+        item.option.type,
+        item.option.strike
+    ))
+    return render_template(
+        'tradable.html',
+        tradable=tradable,
+        data=values,
+        fetchtime=fetch.cststring,
+        fetchid=fetchid,
+        fetches=reversed(tradable.fetches)
+    )
 
 @app.route('/tradable/option/<int:id>')
 def option(id):
     value = session.query(OptionData).get(id)
     return render_template('option.html', value=value)
-
-def memoryused():
-    ''' Get's the amount of memory used in GB
-    '''
-    query = session.execute("SELECT pg_database_size('options');")
-    memory = [byts for (byts,) in query][0]
-    gigabytes = memory / (1000. ** 3)
-    return round(gigabytes, 2)
-
-def getchain(name='SPY'):
-    ''' Get the most recent options chain for the given tradable
-    '''
-    tradable = session.query(Tradable).filter_by(name=name).first()
-
-    # Get All Option IDs for this Tradable:
-    print('Fetching %s Options...' % tradable.name)
-    query = session.execute("SELECT id FROM options WHERE tradable_id=%s;" % tradable.id)
-    optionids = [str(id) for (id,) in query]
-
-    # Get the Time of The Most Recent Options Data Query For this Tradable:
-    print('Determining Most Recent Fetch Time...')
-    query = session.execute("SELECT MAX(time) FROM options_data WHERE option_id IN (%s);" % ', '.join(optionids))
-    mostrecent = list(query)[0][0]
-    print('Most recent Fetch Was: %s' % mostrecent)
-
-    # Get the options data ids for the most recent fetch:
-    print('Fetching Most Recent Fetch Options Data IDs...')
-    query = session.execute("SELECT id FROM options_data WHERE time='%s';" % str(mostrecent))
-    dataids = [int(id) for (id,) in query]
-
-    # Get all the options Values:
-    print('Collecting Options Data Records From Most Recent API Fetch...')
-    values = session.query(OptionData).filter(OptionData.id.in_(dataids)).all()
-
-    mostrecent -= relativedelta(hours=5)
-    fetchtime = mostrecent.strftime('%B %d at %I:%M Central')
-
-    # values = random.sample(values, 1000)
-    values.sort(key=lambda item: (item.dte, item.option.type, item.option.strike))
-    return values, fetchtime
 
 
 if __name__ == '__main__':

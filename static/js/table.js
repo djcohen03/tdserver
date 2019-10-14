@@ -55,4 +55,6 @@ $(function() {
     var table = $('table');
     var button = $('.download');
     bindTableDownload(table, button);
+
+
 });

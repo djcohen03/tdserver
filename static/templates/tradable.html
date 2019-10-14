@@ -1,21 +1,44 @@
 {% extends '_base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css">
+{% endblock %}
+
 {% block body %}
 <ol class="breadcrumb">
     <li><a href="/">Home</a></li>
+    {% if fetchid %}
+    <li><a href='/tradable/{{ tradable.id }}'>{{ tradable.name }}</a></li>
+    <li class="active">{{ fetchtime }}</li>
+    {% else %}
     <li class="active">{{ tradable.name }}</li>
+    {% endif %}
 </ol>
 
 
 
 <div class="page-header">
-    <h1>{{ tradable.name }} Data</h1>
+    <div class="row">
+        <div class="col-sm-8">
+            <h1>{{ tradable.name }} Data</h1>
+        </div>
+        <div class="col-sm-4 header-select">
+            <select id='choose-fetch' class="form-control">
+                {% for fetch in fetches %}
+                <option value="/tradable/{{ tradable.id }}{% if loop.index != 1 %}/fetch/{{ fetch.id }}{% endif %}" {% if fetchid == fetch.id %}selected{% endif %}>
+                    {{ fetch.cststring }} {% if loop.index == 1 %}(CURRENT){% endif %}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
 </div>
 
 
 <div class="panel panel-default">
     <!-- Default panel contents -->
     <div class="panel-heading">
-        <span class='bold'>Last Update:</span> {{ fetchtime }}
+        <span class='bold'>Fetched:</span> {{ fetchtime }}
         <a class="pull-right download">
             <span class="glyphicon glyphicon-download-alt"></span>
             Download
@@ -33,9 +56,8 @@
         <thead>
             <tr>
                 <th colspan="4" class='br'>Contract</th>
-                <th colspan="6" class='br'>Market</th>
-                <th colspan="4" class='br'>Greeks</th>
-                <th></th>
+                <th colspan="7" class='br'>Market</th>
+                <th colspan="4">Greeks</th>
             </tr>
             <tr>
                 <th>Type</th>
@@ -47,12 +69,12 @@
                 <th>Bid</th>
                 <th>Ask</th>
                 <th>Impl. Vol</th>
-                <th class='br'>OI</th>
+                <th>OI</th>
+                <th class='br'>Volume</th>
                 <th>Delta</th>
                 <th>Theta</th>
                 <th>Rho</th>
-                <th class='br'>Vega</th>
-                <th>Symbol</th>
+                <th>Vega</th>
             </tr>
         </thead>
         <tbody>
@@ -67,12 +89,12 @@
                 <td>{{ item.bid }} <span class='subspan'>{{ item.bidsize }}</span> </td>
                 <td>{{ item.ask }} <span class='subspan'>{{ item.asksize }}</span> </td>
                 <td>{{ item.volatility | round(1) }}%</td>
-                <td class='br'>{% if item.openinterest != None %}{{ item.openinterest }}{% endif %}</td>
+                <td>{% if item.openinterest != None %}{{ item.openinterest }}{% endif %}</td>
+                <td class='br'>{{ item.volume }}</td>
                 <td class="{% if item.delta >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.delta }}</td>
                 <td>{{ item.theta }}</td>
                 <td class="{% if item.rho >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.rho }}</td>
-                <td class='br'>{{ item.vega }}</td>
-                <td><a href="/tradable/option/{{ item.id }}">{{ item.option.symbol }}</a></td>
+                <td>{{ item.vega }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -81,5 +103,7 @@
 <p class="text-center ft-20">...</p>
 
 <script type="text/javascript" src="/static/js/table.js"></script>
+<script type="text/javascript" src="/static/js/selectize.min.js"></script>
+<script type="text/javascript" src="/static/js/tradable.js"></script>
 
 {% endblock %}
