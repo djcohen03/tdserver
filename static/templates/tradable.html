@@ -80,7 +80,11 @@
         <tbody>
             {% for item in data %}
             <tr>
-                <td class='type-{{ item.option.type | lower }}'>{{ item.option.type }}</td>
+                <td class='type-{{ item.option.type | lower }}'>
+                    <a href="/tradable/option/{{ item.id }}" target="_blank">
+                        {{ item.option.type }}
+                    </a>
+                </td>
                 <td>{{ item.dte }}</td>
                 <td>{{ item.option.expiration }}</td>
                 <td class='br'>{{ item.option.strike }}</td>

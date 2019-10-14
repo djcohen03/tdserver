@@ -1,10 +1,12 @@
-td.type-call {
+td.type-call > a {
     font-weight: bold;
     color: rgb(0, 94, 158);
+    text-decoration: none;
 }
-td.type-put {
+td.type-put > a {
     font-weight: bold;
     color: rgb(210, 76, 0);
+    text-decoration: none;
 }
 
 table.table td, table.table th {
