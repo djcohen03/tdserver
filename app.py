@@ -22,7 +22,8 @@ def tradable(id):
     tradable = session.query(Tradable).get(id)
     fetches = tradable.fetches
     if fetches:
-        fetch = fetches[-1]
+        fetches.sort(key=lambda x: x.time, reverse=True)
+        fetch = fetches[0]
         values = sorted(fetch.values, key=lambda item: (
             item.dte,
             item.option.type,
@@ -33,7 +34,7 @@ def tradable(id):
             tradable=tradable,
             data=values,
             fetchtime=fetch.cststring,
-            fetches=reversed(fetches)
+            fetches=fetches,
         )
     else:
         return None
@@ -50,13 +51,14 @@ def tradable_fetch(id, fetchid):
         item.option.type,
         item.option.strike
     ))
+    fetches = sorted(tradable.fetches, key=lambda x: x.time, reverse=True)
     return render_template(
         'tradable.html',
         tradable=tradable,
         data=values,
         fetchtime=fetch.cststring,
         fetchid=fetchid,
-        fetches=reversed(tradable.fetches)
+        fetches=fetches,
     )
 
 @app.route('/tradable/option/<int:id>')
