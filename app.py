@@ -1,8 +1,9 @@
+import pytz
 import random
 import datetime
 from dateutil.relativedelta import relativedelta
-from flask import Flask, render_template
-from .td.db.models import Tradable, Option, OptionData, session
+from flask import Flask, request, render_template
+from td.db.models import Tradable, Option, OptionData, session
 
 
 app = Flask(__name__, template_folder="static/templates")
@@ -22,9 +23,19 @@ def index():
 
 @app.route('/tradable/<int:id>')
 def tradable(id):
+    '''
+    '''
+    timestamp = request.args.get('timestamp')
+
     tradable = session.query(Tradable).get(id)
-    data, fetchtime = getchain(tradable.name)
-    return render_template('tradable.html', tradable=tradable, data=data, fetchtime=fetchtime)
+    data, fetchtime = getchain(tradable.name, timestamp=timestamp)
+    dates = getdates(tradable.name)
+    return render_template('tradable.html',
+        tradable=tradable,
+        data=data,
+        fetchtime=fetchtime,
+        dates=dates,
+    )
 
 @app.route('/tradable/option/<int:id>')
 def option(id):
@@ -39,7 +50,20 @@ def memoryused():
     gigabytes = memory / (1000. ** 3)
     return round(gigabytes, 2)
 
-def getchain(name='SPY'):
+def getdates(name='SPY'):
+    ''' Get a list of the data snapshots for the given tradable
+    '''
+    tradable = session.query(Tradable).filter_by(name=name).first()
+    query = session.execute("SELECT id FROM options WHERE tradable_id=%s;" % tradable.id)
+    optionids = [str(id) for (id,) in query]
+
+    # Get the Time of The Most Recent Options Data Query For this Tradable:
+    query = session.execute("SELECT time, count(*) FROM options_data WHERE option_id IN (%s) GROUP BY time;" % ', '.join(optionids))
+    dates = [date for (date, count) in query if count > 1]
+    dates.sort(reverse=True)
+    return dates
+
+def getchain(name='SPY', timestamp=None):
     ''' Get the most recent options chain for the given tradable
     '''
     tradable = session.query(Tradable).filter_by(name=name).first()
@@ -49,23 +73,28 @@ def getchain(name='SPY'):
     query = session.execute("SELECT id FROM options WHERE tradable_id=%s;" % tradable.id)
     optionids = [str(id) for (id,) in query]
 
-    # Get the Time of The Most Recent Options Data Query For this Tradable:
-    print('Determining Most Recent Fetch Time...')
-    query = session.execute("SELECT MAX(time) FROM options_data WHERE option_id IN (%s);" % ', '.join(optionids))
-    mostrecent = list(query)[0][0]
-    print('Most recent Fetch Was: %s' % mostrecent)
+    if not timestamp:
+        # Get the Time of The Most Recent Options Data Query For this Tradable:
+        print('Determining Most Recent Fetch Time...')
+        query = session.execute("SELECT MAX(time) FROM options_data WHERE option_id IN (%s);" % ', '.join(optionids))
+        timestamp = list(query)[0][0]
+        print('Most recent Fetch Was: %s' % timestamp)
+    else:
+        # Adjust from Central:
+        timestamp += relativedelta(hours=5)
+        print('Requested: %s' % timestamp)
 
     # Get the options data ids for the most recent fetch:
     print('Fetching Most Recent Fetch Options Data IDs...')
-    query = session.execute("SELECT id FROM options_data WHERE time='%s';" % str(mostrecent))
+    query = session.execute("SELECT id FROM options_data WHERE time='%s';" % str(timestamp))
     dataids = [int(id) for (id,) in query]
 
     # Get all the options Values:
     print('Collecting Options Data Records From Most Recent API Fetch...')
     values = session.query(OptionData).filter(OptionData.id.in_(dataids)).all()
 
-    mostrecent -= relativedelta(hours=5)
-    fetchtime = mostrecent.strftime('%B %d at %I:%M Central')
+    timestamp -= relativedelta(hours=5)
+    fetchtime = timestamp.strftime('%B %d at %I:%M Central')
 
     # values = random.sample(values, 1000)
     values.sort(key=lambda item: (item.dte, item.option.type, item.option.strike))

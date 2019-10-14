@@ -20,3 +20,7 @@ body {
 a.download {
     cursor: pointer;
 }
+
+.page-header .header-dropdown {
+    margin-top: 25px;
+}
