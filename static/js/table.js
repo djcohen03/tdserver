@@ -1,15 +1,22 @@
 $(function() {
 
     var getText = cell => {
-        // Get the text of just the element, without any text from children
-        // elements:
-        return $(cell)
-            .clone()//clone the element
-            .children() //select all the children
-            .remove()   //remove all the children
-            .end()  //again go back to selected element
-            .text()
-            .trim();
+        var $cell = $(cell);
+
+        var content = $cell.data('content');
+        if (content) {
+            return content;
+        } else {
+            // Get the text of just the element, without any text from children
+            // elements:
+            return $cell
+                .clone()//clone the element
+                .children() //select all the children
+                .remove()   //remove all the children
+                .end()  //again go back to selected element
+                .text()
+                .trim();
+        }
     }
 
     //

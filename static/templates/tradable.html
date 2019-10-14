@@ -80,7 +80,7 @@
         <tbody>
             {% for item in data %}
             <tr>
-                <td class='type-{{ item.option.type | lower }}'>
+                <td class='type-{{ item.option.type | lower }}' data-content='{{ item.option.type }}'>
                     <a href="/tradable/option/{{ item.id }}" target="_blank">
                         {{ item.option.type }}
                     </a>
