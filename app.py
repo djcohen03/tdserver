@@ -19,25 +19,12 @@ def index():
 
 @app.route('/tradable/<int:id>')
 def tradable(id):
+    '''
+    '''
     tradable = session.query(Tradable).get(id)
-    fetches = tradable.fetches
-    if fetches:
-        fetches.sort(key=lambda x: x.time, reverse=True)
-        fetch = fetches[0]
-        values = sorted(fetch.values, key=lambda item: (
-            item.dte,
-            item.option.type,
-            item.option.strike
-        ))
-        return render_template(
-            'tradable.html',
-            tradable=tradable,
-            data=values,
-            fetchtime=fetch.cststring,
-            fetches=fetches,
-        )
-    else:
-        return None
+    fetches = sorted(tradable.fetches, key=lambda x: x.time, reverse=True)
+    return render_template('history.html', fetches=fetches,  tradable=tradable)
+
 
 @app.route('/tradable/<int:id>/snapshot/<int:fetchid>')
 def tradable_fetch(id, fetchid):
@@ -60,15 +47,6 @@ def tradable_fetch(id, fetchid):
         fetchid=fetchid,
         fetches=fetches,
     )
-
-@app.route('/tradable/<int:id>/history')
-def history(id):
-    '''
-    '''
-    tradable = session.query(Tradable).get(id)
-    fetches = sorted(tradable.fetches, key=lambda x: x.time, reverse=True)
-    return render_template('history.html', fetches=fetches,  tradable=tradable)
-
 
 @app.route('/tradable/option/<int:id>')
 def option(id):

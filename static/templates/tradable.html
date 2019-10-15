@@ -7,20 +7,15 @@
 {% block body %}
 <ol class="breadcrumb">
     <li><a href="/">Home</a></li>
-    {% if fetchid %}
     <li><a href='/tradable/{{ tradable.id }}'>{{ tradable.name }}</a></li>
-    <li class="active">{{ fetchtime }} (Snapshot)</li>
-    {% else %}
-    <li class="active">{{ tradable.name }}</li>
-    {% endif %}
+    <li class="active">{{ fetchtime }}</li>
 </ol>
-
 
 
 <div class="page-header">
     <div class="row">
         <div class="col-sm-8">
-            <h1>{{ tradable.name }} {% if fetchid %}Snapshot{% else %}Surface{% endif %}</h1>
+            <h1>{{ tradable.name }} Surface</h1>
         </div>
         <div class="col-sm-4 header-select">
             <select id='choose-fetch' class="form-control">
@@ -43,9 +38,9 @@
             <span class="glyphicon glyphicon-download-alt"></span>
             Download
         </a>
-        <a class="pull-right show-total" href="/tradable/{{ tradable.id }}/history" target="_blank">
+        <!-- <a class="pull-right show-total" href="/tradable/{{ tradable.id }}/history" target="_blank">
             <i class="glyphicon glyphicon-globe"></i> View All
-        </a>
+        </a> -->
     </div>
     <div class="panel-body">
         <p class='col-sm-4' style="display:none;">
@@ -67,7 +62,7 @@
                 <th>DTE</th>
                 <th>Expiration</th>
                 <th class='br'>Strike</th>
-                <th>Price ({{ tradable.name }})</th>
+                <th>Spot</th>
                 <th>ITM</th>
                 <th>Bid</th>
                 <th>Ask</th>

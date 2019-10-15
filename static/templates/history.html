@@ -4,8 +4,7 @@
 {% block body %}
 <ol class="breadcrumb">
     <li><a href="/">Home</a></li>
-    <li><a href='/tradable/{{ tradable.id }}'>{{ tradable.name }}</a></li>
-    <li class="active">Historic</li>
+    <li class="active">{{ tradable.name }}</li>
 </ol>
 
 
@@ -44,7 +43,7 @@
                     <tr>
                         <td>{{ tradable.name }}</td>
                         <td data-content='{{ fetch.csttime.strftime("%Y-%m-%d %H:%M") }}'>
-                            <a href="/tradable/{{ tradable.id }}/snapshot/{{ fetch.id }}" target="_blank">
+                            <a href="/tradable/{{ tradable.id }}/snapshot/{{ fetch.id }}">
                                 {{ fetch.csttime.strftime('%B %d %Y at %H:%M') }}
                             </a>
                         </td>
