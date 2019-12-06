@@ -19,14 +19,9 @@
 <div class="row">
     <div class="col-sm-4">
         <div class="list-group tradables-list">
-            {% for tradable, ivrank in tradables %}
+            {% for tradable in tradables %}
             <a href="/tradable/{{ tradable.id }}" class="list-group-item">
                 {{ tradable.name }}
-                {% if ivrank %}
-                <span class="badge badge-{% if ivrank < 25 %}danger{% elif ivrank < 75 %}default{% else %}success{% endif %}">
-                    IVR: {{ ivrank | int }}%
-                </span>
-                {% endif %}
             </a>
             {% endfor %}
         </div>

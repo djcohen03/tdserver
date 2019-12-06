@@ -15,10 +15,7 @@ def index():
     spy = session.query(Tradable).filter_by(name='SPY').all()
     tradables += spy
     tradables.sort(key=lambda x: x.name)
-
-    ztradables = [(t, None) for t in tradables]
-
-    return render_template('index.html', tradables=ztradables, gigabytes=gigabytes)
+    return render_template('index.html', tradables=tradables, gigabytes=gigabytes)
 
 @app.route('/tradable/<int:id>')
 def tradable(id):
