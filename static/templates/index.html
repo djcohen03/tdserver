@@ -24,7 +24,7 @@
                 {{ tradable.name }}
                 {% if ivrank %}
                 <span class="badge badge-{% if ivrank < 25 %}danger{% elif ivrank < 75 %}default{% else %}success{% endif %}">
-                    IVR: {{ ivrank }}%
+                    IVR: {{ ivrank | int }}%
                 </span>
                 {% endif %}
             </a>

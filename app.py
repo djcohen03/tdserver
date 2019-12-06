@@ -16,7 +16,7 @@ def index():
     tradables += spy
     tradables.sort(key=lambda x: x.name)
 
-    ztradables = [(t, t.ivrank()) for t in tradables]
+    ztradables = [(t, None) for t in tradables]
 
     return render_template('index.html', tradables=ztradables, gigabytes=gigabytes)
 
