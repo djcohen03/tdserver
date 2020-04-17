@@ -5,9 +5,12 @@ body {
     font-size: 20px;
 }
 
-.bold {
-    font-weight: bold;
-}
+.full-width {width: 100% !important;}
+
+.bold {font-weight: bold !important;}
+.normal {font-weight: normal !important;}
+.lighter {font-weight: lighter !important;}
+
 
 .data-display .data-values > h2 {
     font-weight: lighter;

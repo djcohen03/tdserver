@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from td.db.models import Tradable, Option, OptionData, OptionsFetch, session
+from td.db.models import Tradable, Option, OptionData, OptionsFetch, Token, session
 from utils import AppUtils
 
 app = Flask(__name__, template_folder="static/templates")
@@ -50,8 +50,18 @@ def tradable_fetch(id, fetchid):
 
 @app.route('/tradable/option/<int:id>')
 def option(id):
+    ''' Single-Option Detail View
+    '''
     value = session.query(OptionData).get(id)
     return render_template('option.html', value=value)
+
+@app.route('/tokens')
+def tokens():
+    ''' Current API Token Details
+    '''
+    tokens = session.query(Token).all()
+    tokens.sort(key=lambda token: token.date, reverse=True)
+    return render_template('tokens.html', tokens=tokens)
 
 
 if __name__ == '__main__':
