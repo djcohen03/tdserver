@@ -7,18 +7,37 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
         <script src="https://momentjs.com/downloads/moment.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/css/utility.css">
         <link rel="stylesheet" href="/static/css/main.css">
         <link rel="stylesheet" href="/static/css/table.css">
         <link rel="stylesheet" href="/static/css/callout.css">
         <link rel="stylesheet" href="/static/css/badge.css">
+        <link rel="stylesheet" href="/static/css/animate.css">
         <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/x-icon"/>
 
         {% block head %}
         {% endblock %}
-
     </head>
     <body>
         {% block body %}
         {% endblock %}
+
+        <script type="text/javascript">
+            var flaskMessges = []
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            flaskMessges.push({
+                message: '{{ message }}',
+                category: '{{ category }}'
+            })
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </script>
+
+        <!-- Message Flashing -->
+        <div id="flash-messages"></div>
+        <script type="text/javascript"  src="/static/js/flash.js"></script>
     </body>
 </html>

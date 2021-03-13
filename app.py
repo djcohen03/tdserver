@@ -1,8 +1,47 @@
-from flask import Flask, render_template
+import os
+from flask import Flask, request, render_template, redirect, flash, session, make_response
 from td.db.models import Tradable, Option, OptionData, OptionsFetch, Token, session
 from utils import AppUtils
+from auth import FlaskAuth
+
 
 app = Flask(__name__, template_folder="static/templates")
+
+# Set app secret key for message flashing:
+app.secret_key = os.urandom(24)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    ''' Login Endpoint API
+    '''
+    if request.method == 'GET':
+        return render_template('login.html')
+    else:
+        username = request.form.get('username')
+        password = request.form.get('password')
+        auth = FlaskAuth.authenticate(username, password)
+        if auth:
+            response = make_response()
+            for cookie, value in auth.cookies.iteritems():
+                response.set_cookie(cookie, value)
+
+            response.headers['location'] = '/'
+
+            flash('Credential Accepted', 'success')
+            return response, 302
+        else:
+            flash('Incorrect Username/Password', 'error')
+            return redirect('/login')
+
+@app.route('/logout')
+def logout():
+    ''' Login Endpoint API
+    '''
+    FlaskAuth.deauthenticate()
+    flash('Successfully Logged Out', 'info')
+    return redirect('/login')
+
 
 @app.route('/')
 def index():
@@ -63,6 +102,9 @@ def tokens():
     tokens.sort(key=lambda token: token.date, reverse=True)
     return render_template('tokens.html', tokens=tokens)
 
+
+# Setup authentication:
+app.before_request(FlaskAuth.checkauth)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
