@@ -93,9 +93,9 @@
                 <td>{{ item.volatility | round(1) }}%</td>
                 <td>{% if item.openinterest != None %}{{ item.openinterest }}{% endif %}</td>
                 <td class='br'>{{ item.volume }}</td>
-                <td class="{% if item.delta >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.delta }}</td>
+                <td>{{ item.delta }}</td>
                 <td>{{ item.theta }}</td>
-                <td class="{% if item.rho >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.rho }}</td>
+                <td>{{ item.rho }}</td>
                 <td>{{ item.vega }}</td>
             </tr>
             {% endfor %}
