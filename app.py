@@ -1,4 +1,5 @@
 import os
+import logging
 from flask import Flask, request, render_template, redirect, flash, session, make_response
 from td.db.models import Tradable, Option, OptionData, OptionsFetch, Token, session
 from utils import AppUtils
@@ -10,6 +11,8 @@ app = Flask(__name__, template_folder="static/templates")
 # Set app secret key for message flashing:
 app.secret_key = os.urandom(24)
 
+# Initialize Logger:
+logging.basicConfig(level=logging.INFO)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
