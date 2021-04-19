@@ -31,3 +31,10 @@ a.show-total {
     margin-right: 20px;
     cursor: pointer;
 }
+
+#flash-messages {
+    position: fixed;
+    bottom: 0px;
+    right: 20px;
+    width: 500px;
+}
