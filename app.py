@@ -1,9 +1,11 @@
 import os
+import json
 import logging
 from flask import Flask, request, render_template, redirect, flash, session, make_response
 from td.db.models import Tradable, Option, OptionData, OptionsFetch, Token, session
 from utils import AppUtils
 from auth import FlaskAuth
+
 
 
 app = Flask(__name__, template_folder="static/templates")
@@ -13,6 +15,25 @@ app.secret_key = os.urandom(24)
 
 # Initialize Logger:
 logging.basicConfig(level=logging.INFO)
+
+@app.route('/auth', methods=['POST'])
+def authenticate():
+    '''
+    '''
+    username = request.form.get('username')
+    password = request.form.get('password')
+    auth = FlaskAuth.authenticate(username, password)
+    if auth:
+        response = make_response()
+        for cookie, value in auth.cookies.iteritems():
+            response.set_cookie(cookie, value)
+
+        response.set_data(auth.text)
+
+        # import pdb; pdb.set_trace()
+        return response, 200
+    else:
+        return json.dumps({'error': 'invalid credentials'}), 400
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

@@ -10,7 +10,7 @@ class FlaskAuth(object):
         ''' Check User Authentication
         '''
         path = request.path
-        if path.startswith('/static') or path.startswith('/login') or path.startswith('/logout'):
+        if path.startswith(('/static', '/login', '/logout', '/auth')):
             return
         else:
             # Restrict All Other Endpoints:
